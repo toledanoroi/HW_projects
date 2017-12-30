@@ -8,6 +8,7 @@
 /*Includes and Defines*/
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <tchar.h> /* for TCHAR, _T() */
 
