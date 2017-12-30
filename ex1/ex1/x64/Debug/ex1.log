@@ -1,0 +1,4 @@
+﻿  main.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\ex1\ex1\main.c(107): warning C4715: 'ImportKidsArray': not all control paths return a value
+  ex1.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\ex1\x64\Debug\ex1.exe
+  ex1.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\ex1\x64\Debug\ex1.pdb (Full PDB)

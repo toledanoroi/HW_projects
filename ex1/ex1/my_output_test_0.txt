@@ -1,0 +1,13 @@
+Tamar,Almonds
+Yarden,Chips
+Muhammad,Apple
+Yosef,Almonds
+Rami,Apple
+Yossi,Popcorn
+Shimi,Apple
+Roni,Nougat
+Arie,Gummy Bears
+Arik,Bamba
+Rafi,Peanuts
+Eliko,Bamba
+Rami,Chips

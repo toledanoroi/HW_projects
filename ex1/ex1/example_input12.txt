@@ -1,0 +1,11 @@
+Tamar,Apple
+Muhammad,Nougat
+Yosef,Popcorn
+Adele,Chocolate Bar
+Miriam,Peanuts
+Sasha,Chips
+Or,Almonds
+Simon,Bamba
+Shir,Gummy Bears
+Avi,Bamba
+Max,Toffee

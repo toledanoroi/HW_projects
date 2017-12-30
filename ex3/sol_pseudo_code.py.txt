@@ -1,0 +1,49 @@
+# Each roomate's closet has a different number of clothes.
+# Here we use a constant. In the excercise it is a partition
+# of the program's input.
+INVENTORY_SIZES = [4,2,5,7]
+
+# Semaphore - signals that the laundry machine has started.
+machine_turned_on_sem = Semaphore(0)
+# Semaphore - signals that the laundry machine has finished.
+machine_turned_off_sem = Semaphore(0)
+# List of semaphores - each semaphore belongs to a roomate.
+# It represents the number of clothes in the roomate's closet.
+roomate_sems = [Semaphore(Sn) for Sn in INVENTORY_SIZES]
+
+# A list of clothing items in the machine, ready to be washed.
+machine_bin = []
+
+# Machine Thread
+# 1) Wait to be turned on
+# 2) Return all clothes to owners
+# 3) Signal that laundry is finished.
+while True:
+    
+    machine_turned_on_sem.wait()
+    
+    for item in machine_bin:
+        roomate_sems[item.name_tag].signal()
+    
+    # Signal the roomate that
+    machine_turned_off_sem.signal()
+
+# Roomate Thread
+# 1) Take a new clothing item from the closet.
+#    If the closet is empty, wait.
+# 2) Take mutex
+# 3) If machine is full, turn it on and wait.
+# 4) Add new item to machine.
+# 5) Release mutex
+while True:
+    roomate_sems[self.name_tag].wait()
+    item = Item(self.name_tag)
+    
+    shared_mutex.wait()
+    
+    if len(machine_bin) == M:
+        machine_turned_on_sem.signal()
+        machine_turned_off_sem.wait()
+    machine_bin.append(item)
+    
+    shared_mutex.signal()

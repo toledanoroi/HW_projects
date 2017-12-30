@@ -1,0 +1,19 @@
+Simulation Started
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Robot Active
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Roommate 0 active
+Roommate 1 active
+Roommate 0 active
+Roommate 1 active
