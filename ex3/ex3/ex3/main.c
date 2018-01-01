@@ -374,12 +374,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	ptr_roommate_thread_handle[jj] = ptr_machine_thread_handle;
-	ptr_roommate_exitcode[jj] = ptr_machine_exitcode;
-	ptr_roommate_thread_id[jj] = ptr_machine_thread_id;
+	ptr_roommate_exitcode[jj] = (*ptr_machine_exitcode);
+	ptr_roommate_thread_id[jj] = (*ptr_machine_thread_id);
 	jj++;
 	ptr_roommate_thread_handle[jj] = ptr_time_thread_handle;
-	ptr_roommate_exitcode[jj] = ptr_time_exitcode;
-	ptr_roommate_thread_id[jj] = ptr_time_thread_id;
+	ptr_roommate_exitcode[jj] = (*ptr_time_exitcode);
+	ptr_roommate_thread_id[jj] = (*ptr_time_thread_id);
 	DWORD num_of_threads = num_of_roommate + 2;
 
 	// wait for all the thread to be done.

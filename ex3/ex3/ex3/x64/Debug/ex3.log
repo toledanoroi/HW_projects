@@ -1,7 +1,5 @@
-﻿  mohterfile.c
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\ex3\ex3\ex3\motherfile.h(20): warning C4005: 'MAXCHAR': macro redefinition
+﻿  machine.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\motherfile.h(20): warning C4005: 'MAXCHAR': macro redefinition
   c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\ex3\ex3\ex3\mohterfile.c(66): warning C4018: '<': signed/unsigned mismatch
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\ex3\ex3\ex3\mohterfile.c(91): warning C4715: 'FreeAndCloseAllMemory': not all control paths return a value
-  ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\ex3\ex3\x64\Debug\ex3.exe
-  ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\ex3\ex3\x64\Debug\ex3.pdb (Partial PDB)
+  ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\ex3\ex3\x64\Debug\ex3.exe
+  ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\ex3\ex3\x64\Debug\ex3.pdb (Partial PDB)

@@ -87,7 +87,7 @@ int FreeAndCloseAllMemory(HANDLE *ptr_roommate_thread_handle, DWORD *ptr_roommat
 	free(ptr_roommate_thread_handle);
 	free(roommates_array);
 
-	
+	return(SUCCESS_INDICATION);
 }
 
 

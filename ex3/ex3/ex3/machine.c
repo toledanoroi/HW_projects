@@ -115,8 +115,7 @@ DWORD WINAPI LaundryMachineThread(LPVOID lpParam) {
 	}
 	printf("Hi I'm the Robot\n");
 	
-
-	while (robot_thread_params->time_thread->time_flag) {
+	do {
 		if (machine_is_on) {
 
 			robot_thread_params->mutex_laundry_bin.waiting_code = WaitForSingleObject(robot_thread_params->mutex_laundry_bin.handle, INFINITE);
@@ -141,7 +140,10 @@ DWORD WINAPI LaundryMachineThread(LPVOID lpParam) {
 			}
 			printf("Robot released the laundry bin mutex\n");
 		}
-	}
+	} while (robot_thread_params->time_thread->time_flag);
+	printf("Robot going to sleep !!!!!!!!!!!!!!!!!!!\n");
+	Sleep(10000);
+	printf("Robot thread finished!!!!!!\n");
 
 	return MACHINE_THREAD__CODE_SUCCESS;
 

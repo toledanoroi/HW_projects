@@ -158,7 +158,7 @@ DWORD WINAPI RoommateThread(LPVOID lpParam) {
 	}
 	printf("Hi, I'm roommate %d\n", roommate_thread_params->index);
 
-	while (roommate_thread_params->time_thread->time_flag) {
+	do {
 		printf("roommate %d going to sleep\n", roommate_thread_params->index);
 		Sleep(roommate_thread_params->time_for_clothes_change);
 		printf("roommate %d is awake\n", roommate_thread_params->index);
@@ -172,8 +172,8 @@ DWORD WINAPI RoommateThread(LPVOID lpParam) {
 		if (SendDirtyClothesToLaundry(roommate_thread_params)) {
 			return ROOMMATE_THREAD__CODE_ERROR;
 		}
-	}
-	printf("finish all!!!!!!!!!!");
+	} while (roommate_thread_params->time_thread->time_flag);
+	printf("the thread of roommate %d - finished!!!!!!!!!!\n",roommate_thread_params->index);
 	return ROOMMATE_THREAD__CODE_SUCCESS;
 
 }
