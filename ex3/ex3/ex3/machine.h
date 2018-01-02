@@ -25,7 +25,7 @@ typedef struct {
 	semaphore semaphore_laundry_bin_full;
 	semaphore semaphore_laundry_bin_empty;
 	mutex mutex_laundry_bin;
-	mutex mutex_time;
+	//mutex mutex_time;
 	int num_of_roommates;
 } machine_info;
 

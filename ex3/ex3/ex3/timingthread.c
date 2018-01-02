@@ -52,10 +52,9 @@ DWORD WINAPI TimeCounterThread(LPVOID lpParam) {
 	{
 		return TIMING_THREAD__CODE_FAILED;
 	}
-	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 	printf("Hi, I'm the time counter\n");
 	int start_time = GetTickCount();
-
+	PrintLog(time_thread_params->fp_report, "Simulation Started\n", time_thread_params->report_file, NULL);
 	while(time_thread_params->time_flag) {
 		time_thread_params->mutex_time.waiting_code = WaitForSingleObject(time_thread_params->mutex_time.handle, INFINITE);
 		if (time_thread_params->mutex_time.waiting_code != WAIT_OBJECT_0) {
@@ -63,19 +62,21 @@ DWORD WINAPI TimeCounterThread(LPVOID lpParam) {
 			return (ERROR_INDICATION);
 		}
 		time_thread_params->time = (GetTickCount() - start_time);
-		printf("the time is : %ld\n", time_thread_params->time);
+		//printf("the time is : %ld\n", time_thread_params->time);
 
 
 		if (time_thread_params->time >= time_thread_params->program_time) {
 			time_thread_params->time_flag = false;
-			printf("the program time passed: %ld;\n When The max time is %ld\n", time_thread_params->time, time_thread_params->program_time);
+			printf("the program time passed: %ld;\nWhen The max time is %ld\n", time_thread_params->time, time_thread_params->program_time);
 		}
 		if (!(ReleaseMutex(time_thread_params->mutex_time.handle))) {
 			PrintLog(time_thread_params->fp_debug, "Error - release mutex closet\n", time_thread_params->log_file, NULL);
 			return (ERROR_INDICATION);
 		}
-		Sleep(1000);
+		Sleep(DELTA_TIME);
 	}
+	Sleep(4 * DELTA_TIME);
+	printf("timing thread finished his job\n");
 	return TIMING_THREAD__CODE_SUCCESS;
 }
 /*------------------------------------------------------------------------------------------------------------------------------------------*/

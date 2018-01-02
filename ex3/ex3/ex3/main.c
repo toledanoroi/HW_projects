@@ -12,7 +12,80 @@ int total_clothes_in_laundry_bin = 0;
 bool machine_is_on = false;
 char buffer[MAXCHAR];
 
-int GetProgramParameters(char *f_path_param, DWORD *td, DWORD *max_clothes_in_bin, roommate_info *roommates_array, FILE *fp_debug, char* logfile, int num_of_lines) {
+int FreeAndCloseAllMemory(HANDLE *ptr_roommate_thread_handle, DWORD *ptr_roommate_thread_id,
+	DWORD *ptr_roommate_exitcode, DWORD *ptr_roommate_wait_code, roommate_info *roommates_array,
+	machine_info *machine, FILE *fp_debug, char *log_file, timing_info *time_thread, DWORD num_of_threads) {
+
+	//Close Semaphores ans Mutex Handles
+	if (!CloseHandle(machine->mutex_laundry_bin.handle)) {
+		PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+		return(ERROR_INDICATION);
+	}
+	if (!CloseHandle(machine->semaphore_laundry_bin_empty.handle)) {
+		PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+		return(ERROR_INDICATION);
+	}
+	if (!CloseHandle(machine->semaphore_laundry_bin_full.handle)) {
+		PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+		return(ERROR_INDICATION);
+	}
+
+	for (int j = 0; j < num_of_threads - 2; j++) {
+		if (!CloseHandle(roommates_array[j].mutex_closet.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+		if (!CloseHandle(roommates_array[j].semahore_closet_empty.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+		if (!CloseHandle(roommates_array[j].semahore_closet_full.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+		if (!CloseHandle(roommates_array[j].mutex_laundry_bin.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+		if (!CloseHandle(roommates_array[j].semaphore_laundry_bin_empty.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+		if (!CloseHandle(roommates_array[j].semaphore_laundry_bin_full.handle)) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+	}
+
+	//Close threads Handles
+	for (int i = 0; i < num_of_threads; i++) {
+		if (!CloseHandle(ptr_roommate_thread_handle[i])) {
+			PrintLog(fp_debug, "Error when closing handle\n", log_file, NULL);
+			return(ERROR_INDICATION);
+		}
+	}
+
+	//free all memory
+	free(machine);
+	//free(ptr_machine_thread_handle);
+	//free(ptr_machine_thread_id);
+	//free(ptr_machine_exitcode);
+	//free(ptr_machine_wait_code);
+	//free(ptr_time_thread_handle);
+	//free(ptr_time_thread_id);
+	//free(ptr_time_exitcode);
+	//free(ptr_time_wait_code);
+	free(time_thread);
+	free(ptr_roommate_wait_code);
+	free(ptr_roommate_exitcode);
+	free(ptr_roommate_thread_id);
+	free(ptr_roommate_thread_handle);
+	free(roommates_array);
+
+	return (SUCCESS_INDICATION);
+}
+
+int GetProgramParameters(char *f_path_param, DWORD *td, DWORD *max_clothes_in_bin, roommate_info *roommates_array, FILE *fp_debug, char* logfile, int num_of_lines, int *max_sleep_time) {
 	FILE *fp_in;
 	char line[MAX_CHARS_IN_LINE];
 	char time_str[MAX_CHARS_IN_LINE];
@@ -50,6 +123,9 @@ int GetProgramParameters(char *f_path_param, DWORD *td, DWORD *max_clothes_in_bi
 						strncpy(time_str, line, comma);
 						time_str[comma] = '\0';
 						roommates_array[i-2].time_for_clothes_change =  atoi(time_str);
+						if (roommates_array[i - 2].time_for_clothes_change > max_sleep_time) {
+							max_sleep_time = roommates_array[i - 2].time_for_clothes_change;
+						}
 					}
 					jj++;
 				}
@@ -90,9 +166,7 @@ int FilesInit(FILE *fp_report, FILE *fp_debug, char *logfile, char *report_file)
 
 int Allocating(HANDLE **ptr_roommate_thread_handle, DWORD **ptr_roommate_thread_id,
 	DWORD **ptr_roommate_exitcode, DWORD **ptr_roommate_wait_code, roommate_info **roommates_array, int num_of_roommate,
-	FILE *fp_debug, char *logfile, FILE *fp_report, char *reportfile, machine_info **machine, HANDLE **ptr_machine_thread_handle, 
-	DWORD **ptr_machine_thread_id, DWORD **ptr_machine_exitcode ,DWORD **ptr_machine_wait_code	,timing_info **time_thread,
-	HANDLE **ptr_time_thread_handle, DWORD **ptr_time_thread_id,DWORD **ptr_time_exitcode,DWORD **ptr_time_wait_code){
+	FILE *fp_debug, char *logfile, FILE *fp_report, char *reportfile, machine_info **machine,timing_info **time_thread){
 	//allocations for the roommates array
 	(*roommates_array) = (roommate_info*)malloc(sizeof(roommate_info)*num_of_roommate);
 	(*ptr_roommate_thread_handle) = (HANDLE*)malloc(((num_of_roommate)+2) * sizeof(HANDLE));
@@ -101,22 +175,20 @@ int Allocating(HANDLE **ptr_roommate_thread_handle, DWORD **ptr_roommate_thread_
 	(*ptr_roommate_wait_code) = (DWORD*)malloc(((num_of_roommate)+2) * sizeof(DWORD));
 	// allocations for the Laundry Machine 
 	(*machine) = (machine_info*)malloc(sizeof(machine_info));
-	(*ptr_machine_thread_handle) = (HANDLE*)malloc(sizeof(HANDLE));
-	(*ptr_machine_thread_id) = (DWORD*)malloc(sizeof(DWORD));
-	(*ptr_machine_exitcode) = (DWORD*)malloc(sizeof(DWORD));
-	(*ptr_machine_wait_code) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_machine_thread_handle) = (HANDLE*)malloc(sizeof(HANDLE));
+	//(*ptr_machine_thread_id) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_machine_exitcode) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_machine_wait_code) = (DWORD*)malloc(sizeof(DWORD));
 	//allocation for time thread
 	(*time_thread) = (timing_info*)malloc(sizeof(timing_info));
-	(*ptr_time_thread_handle) = (HANDLE*)malloc(sizeof(HANDLE));
-	(*ptr_time_thread_id) = (DWORD*)malloc(sizeof(DWORD));
-	(*ptr_time_exitcode) = (DWORD*)malloc(sizeof(DWORD));
-	(*ptr_time_wait_code) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_time_thread_handle) = (HANDLE*)malloc(sizeof(HANDLE));
+	//(*ptr_time_thread_id) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_time_exitcode) = (DWORD*)malloc(sizeof(DWORD));
+	//(*ptr_time_wait_code) = (DWORD*)malloc(sizeof(DWORD));
 
 	// checks if one of the allocations failed.
 	if (*roommates_array == NULL || *machine == NULL || *ptr_roommate_thread_handle == NULL || *ptr_roommate_thread_id == NULL
-		|| *ptr_roommate_exitcode == NULL || *ptr_roommate_wait_code == NULL|| *ptr_machine_thread_handle == NULL 
-		|| *ptr_machine_thread_id == NULL || *ptr_machine_exitcode == NULL || *ptr_machine_wait_code == NULL|| *time_thread == NULL 
-		|| *ptr_time_thread_handle == NULL || *ptr_time_thread_id == NULL || *ptr_time_exitcode == NULL || *ptr_time_wait_code == NULL) {
+		|| *ptr_roommate_exitcode == NULL || *ptr_roommate_wait_code == NULL || *time_thread == NULL ) {
 		PrintLog(fp_debug, "Allocating memmory failed\n", logfile, NULL);
 		return ERROR_INDICATION;
 	}
@@ -183,13 +255,13 @@ int InitThreads(roommate_info *roommates_array, int num_of_roommate, FILE *fp_de
 			machine->mutex_laundry_bin.error_closing_handle = true;
 		}
 	}
-	machine->mutex_time.handle = OpenMutex(SYNCHRONIZE, FALSE, "time_mutex");
-	if (machine->mutex_time.handle == NULL) {
-		PrintLog(fp_debug, "Error - in time mutex opening for the robot\n", logfile, NULL);
-		if (!CloseHandle(machine->mutex_time.handle)) {
-			machine->mutex_time.error_closing_handle = true;
-		}
-	}
+	//machine->mutex_time.handle = OpenMutex(SYNCHRONIZE, FALSE, "time_mutex");
+	//if (machine->mutex_time.handle == NULL) {
+	//	PrintLog(fp_debug, "Error - in time mutex opening for the robot\n", logfile, NULL);
+	//	if (!CloseHandle(machine->mutex_time.handle)) {
+	//		machine->mutex_time.error_closing_handle = true;
+	//	}
+	//}
 
 
 
@@ -245,13 +317,13 @@ int InitThreads(roommate_info *roommates_array, int num_of_roommate, FILE *fp_de
 			}
 		}
 		
-		roommates_array[jj].mutex_time.handle = OpenMutex(SYNCHRONIZE, FALSE, "time_mutex");
-		if (roommates_array[jj].mutex_time.handle == NULL) {
-			PrintLog(fp_debug, "Error - in time mutex opening for roommate number %s\n", logfile, _itoa(jj, buffer, INT_BASE));
-			if (!CloseHandle(roommates_array[jj].mutex_time.handle)) {
-				roommates_array[jj].mutex_time.error_closing_handle = true;
-			}
-		}
+		//roommates_array[jj].mutex_time.handle = OpenMutex(SYNCHRONIZE, FALSE, "time_mutex");
+		//if (roommates_array[jj].mutex_time.handle == NULL) {
+		//	PrintLog(fp_debug, "Error - in time mutex opening for roommate number %s\n", logfile, _itoa(jj, buffer, INT_BASE));
+		//	if (!CloseHandle(roommates_array[jj].mutex_time.handle)) {
+		//		roommates_array[jj].mutex_time.error_closing_handle = true;
+		//	}
+		//}
 
 		roommates_array[jj].mutex_laundry_bin.handle = OpenMutex(SYNCHRONIZE, FALSE, "laundry_bin_mutex");
 		if (roommates_array[jj].mutex_laundry_bin.handle == NULL) {
@@ -285,34 +357,40 @@ int InitThreads(roommate_info *roommates_array, int num_of_roommate, FILE *fp_de
 
 int main(int argc, char *argv[]) {
 	//parameters
-	int is_fopen,is_free, is_init_thread,is_alloc1, is_file_init, jj, num_of_roommate = ERROR_NUM_ROOMMATES, is_getnumline, num_of_lines = 0;
-	DWORD td;
+	int is_fopen, is_free, is_init_thread, is_alloc1, is_file_init, is_getnumline;
+	int jj, num_of_lines = 0;
+	//file pointers
 	FILE *fp_in = NULL;
 	FILE *fp_debug = NULL;
 	FILE *fp_report = NULL;
 	FILE *fp_parameters = NULL;
+	
+	//timing parameters
+	timing_info *time_thread = NULL;
+	DWORD td;
+	int max_sleep_time = 0;
 
 	//machine parameters
 	DWORD max_clothes_in_bin;
 	machine_info *machine = NULL;
-	HANDLE *ptr_machine_thread_handle = NULL;
-	DWORD *ptr_machine_thread_id = NULL;
-	DWORD *ptr_machine_exitcode = NULL;
-	DWORD *ptr_machine_wait_code = NULL;
+	//HANDLE *ptr_machine_thread_handle = NULL;
+	//DWORD *ptr_machine_thread_id = NULL;
+	//DWORD *ptr_machine_exitcode = NULL;
+	//DWORD *ptr_machine_wait_code = NULL;
 	
 	//roommates parameters
 	roommate_info *roommates_array = NULL;
+	int num_of_roommate = ERROR_NUM_ROOMMATES;
 	HANDLE *ptr_roommate_thread_handle = NULL;
 	DWORD *ptr_roommate_thread_id = NULL;
 	DWORD *ptr_roommate_exitcode = NULL;
 	DWORD *ptr_roommate_wait_code = NULL;
 
-	//timing parameters
-	timing_info *time_thread = NULL;
-	HANDLE *ptr_time_thread_handle = NULL;
-	DWORD *ptr_time_thread_id = NULL;
-	DWORD *ptr_time_exitcode = NULL;
-	DWORD *ptr_time_wait_code = NULL;
+
+	//HANDLE *ptr_time_thread_handle = NULL;
+	//DWORD *ptr_time_thread_id = NULL;
+	//DWORD *ptr_time_exitcode = NULL;
+	//DWORD *ptr_time_wait_code = NULL;
 	
 	//initiallizing files
 	is_file_init = FilesInit(fp_report, fp_debug, argv[3], argv[2]);
@@ -342,15 +420,14 @@ int main(int argc, char *argv[]) {
 	// allocating memory for all the threads
 	is_alloc1 = Allocating(&ptr_roommate_thread_handle, &ptr_roommate_thread_id,
 		&ptr_roommate_exitcode, &ptr_roommate_wait_code, &roommates_array, num_of_roommate, fp_debug, argv[3], fp_report, argv[2], &machine,
-		&ptr_machine_thread_handle, &ptr_machine_thread_id, &ptr_machine_exitcode, &ptr_machine_wait_code,
-		&time_thread,&ptr_time_thread_handle,&ptr_time_thread_id,&ptr_time_exitcode,&ptr_time_wait_code);
+		&time_thread);
 	if (is_alloc1 != SUCCESS_INDICATION) {
 		PrintLog(fp_debug, "Error - allocating memory", argv[3], NULL);
 		return ERROR_INDICATION;
 	}
 
 	// get the threads parameters from the parameters file. 
-	is_fopen = GetProgramParameters(argv[1], &td, &max_clothes_in_bin, roommates_array, fp_debug, argv[3] ,num_of_lines);
+	is_fopen = GetProgramParameters(argv[1], &td, &max_clothes_in_bin, roommates_array, fp_debug, argv[3] ,num_of_lines,&max_sleep_time);
 	if (is_fopen != SUCCESS_INDICATION) {
 		PrintLog(fp_debug, "Error - retreiving program parameters", argv[3], NULL);
 		return ERROR_INDICATION;
@@ -362,48 +439,66 @@ int main(int argc, char *argv[]) {
 		PrintLog(fp_debug, "AllocateMemForThreadsAndInit function failed\n", argv[3], NULL);
 		exit(FAILURE_INDICATION);
 	}
-	PrintLog(fp_report, "Simulation Started\n", argv[2], NULL);
 	
-	// Create a thread for the time counter
-	ptr_time_thread_handle = CreateTimingThreadSimple(TimeCounterThread, time_thread, ptr_time_thread_id, fp_debug, argv[3]);
-	// Create a thread for the machine
-	ptr_machine_thread_handle = CreateThreadSimpleMachine(LaundryMachineThread, machine, ptr_machine_thread_id, fp_debug, argv[3]);
-	// Create a thread for each roommate
-	for (jj = 0; jj < num_of_roommate; jj++) {
-		ptr_roommate_thread_handle[jj] = CreateThreadSimple(RoommateThread, &(roommates_array[jj]), &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+	
+	DWORD num_of_threads = num_of_roommate + 2;
+
+	for (jj = 0; jj < num_of_threads; jj++) {
+		if (jj == 0) {
+			// Create a thread for the time counter
+			ptr_roommate_thread_handle[jj] = CreateTimingThreadSimple(TimeCounterThread, time_thread, &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			printf("This is thread : %ld \t Time Thread\n", (ptr_roommate_thread_id[jj]));
+		}
+		else if (jj == 1) {
+			// Create a thread for the machine
+			ptr_roommate_thread_handle[jj] = CreateThreadSimpleMachine(LaundryMachineThread, machine, &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			printf("This is thread : %ld \t Machine Thread\n", (ptr_roommate_thread_id[jj]));
+		}
+		else {
+			// Create a thread for each roommate
+			ptr_roommate_thread_handle[jj] = CreateThreadSimple(RoommateThread, &(roommates_array[jj - 2]), &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			printf("This is thread : %ld \t Roommate %d Thread\n", (ptr_roommate_thread_id[jj]),roommates_array[jj-2].index);
+		}
+		
 	}
 
-	ptr_roommate_thread_handle[jj] = ptr_machine_thread_handle;
-	ptr_roommate_exitcode[jj] = ptr_machine_exitcode;
-	ptr_roommate_thread_id[jj] = ptr_machine_thread_id;
-	jj++;
-	ptr_roommate_thread_handle[jj] = ptr_time_thread_handle;
-	ptr_roommate_exitcode[jj] = ptr_time_exitcode;
-	ptr_roommate_thread_id[jj] = ptr_time_thread_id;
-	DWORD num_of_threads = num_of_roommate + 2;
+	//ptr_roommate_thread_handle[jj] = ptr_machine_thread_handle;
+	//ptr_roommate_exitcode[jj] = ptr_machine_exitcode;
+	//ptr_roommate_thread_id[jj] = ptr_machine_thread_id;
+	//jj++;
+	//ptr_roommate_thread_handle[jj] = ptr_time_thread_handle;
+	//ptr_roommate_exitcode[jj] = ptr_time_exitcode;
+	//ptr_roommate_thread_id[jj] = ptr_time_thread_id;
+	
 
 	// wait for all the thread to be done.
 	DWORD waitcode_main = WaitForMultipleObjects(num_of_threads, ptr_roommate_thread_handle, TRUE, INFINITE);
+	//DWORD waitcode_main = WaitForSingleObject(ptr_roommate_thread_handle[1], INFINITE);
+	
+	printf("Main thread is going to sleep\n");
+	Sleep(max_sleep_time + DELTA_TIME);
+	printf("The thread is awake and start closing the program\n");
 
 	//get exit codes 
 	for (int kk = 0; kk < num_of_threads; kk++) {
-		if (GetExitCodeThread(ptr_roommate_thread_handle[kk], (&(ptr_roommate_exitcode[kk]))) == 0) {
+		ptr_roommate_exitcode[kk] = GetExitCodeThread(ptr_roommate_thread_handle[kk], (&(ptr_roommate_exitcode[kk])));
+		if (ptr_roommate_exitcode[kk] == 0) {
 			PrintLog(fp_debug, "Error with exitcodes of the thread\n",argv[3],NULL);
 			return ERROR_INDICATION;
 		}
+		else {
+			printf("The exit code of thread number %d is : %ld", kk,ptr_roommate_exitcode[kk]);
+		}
 	}
-
+	
 	//realease all the active threads and free allocated memory
-	is_free = FreeAndCloseAllMemory(ptr_roommate_thread_handle, ptr_roommate_thread_id,
+	is_free =  FreeAndCloseAllMemory(ptr_roommate_thread_handle, ptr_roommate_thread_id,
 		ptr_roommate_exitcode, ptr_roommate_wait_code, roommates_array,
-		machine, ptr_machine_thread_handle, fp_debug, argv[3],
-		ptr_machine_thread_id, ptr_machine_exitcode, ptr_machine_wait_code, time_thread,
-		ptr_time_thread_handle, ptr_time_thread_id, ptr_time_exitcode, ptr_time_wait_code, num_of_threads);
+		machine, fp_debug, argv[3], time_thread, num_of_threads);
 	if (is_free != SUCCESS_INDICATION) {
 		PrintLog(fp_debug, "Error when try to free memory\n", argv[3], NULL);
 		return (ERROR_INDICATION);
 	}
-
 	return (SUCCESS_INDICATION);
 }
 

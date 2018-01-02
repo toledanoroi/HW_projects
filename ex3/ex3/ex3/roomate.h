@@ -36,8 +36,7 @@ typedef struct {
 	semaphore semaphore_laundry_bin_empty;
 	mutex mutex_closet;
 	mutex mutex_laundry_bin;
-	mutex mutex_time;
-	//mutex mutex_zero_clothes;
+	//mutex mutex_time;
 } roommate_info;
 
 typedef enum {

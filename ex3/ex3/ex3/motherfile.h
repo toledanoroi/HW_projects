@@ -19,6 +19,7 @@ Description :
 #define MAX_CHARS_IN_LINE 51 
 #define MAXCHAR 4096 
 #define INT_BASE 10
+#define DELTA_TIME 1000
 
 extern char buffer[MAXCHAR];
 extern int total_clothes_in_laundry_bin;

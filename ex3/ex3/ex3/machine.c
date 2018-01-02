@@ -41,63 +41,64 @@ HANDLE CreateThreadSimpleMachine(LPTHREAD_START_ROUTINE machine_start_routine, m
 
 int WashClothes(machine_info *robot_thread_params) {
 	LONG previous_count;
+	printf("The Robot started the WashClothes function\n");
 	for (int ii = 0; ii < robot_thread_params->bin_full; ii++) {
+		printf("The Robot want to release the semaphore laundry bin full\n");
 		if (!(ReleaseSemaphore(robot_thread_params->semaphore_laundry_bin_full.handle, 1, &previous_count))) {
-			printf("**************************************************\n");
+			//printf("**************************************************\n");
 			printf("realease %d failed\n",ii);
 			PrintLog(robot_thread_params->fp_debug, "Error - release semaphore_laundry_bin_full dsgf\n", robot_thread_params->log_file, NULL);
 			return (ERROR_INDICATION);
 		}
-		printf("prev_count = %d \n", previous_count);
-		printf("**************************************************\n");
+		//printf("prev_count = %d \n", previous_count);
+		//printf("**************************************************\n");
 		printf("realease %d succeded\n", ii);	
 	}
+	printf("The Robot finished the WashClothes function\n");
 	return SUCCESS_INDICATION;
 }
 int ReturnClothesToRoommates(machine_info *robot_thread_params) {
 	LONG previous_count;
 	//int temp=-1;
+	printf("The Robot started the ReturnClothesToRoommate function\n");
 	for (int i = 0; i < robot_thread_params->num_of_roommates; i++) {
-		printf("started returning clothes for roommate %d\n", robot_thread_params->roommates[i].index);
+		printf("The Robot started returning clothes for roommate %d\n", robot_thread_params->roommates[i].index);
+		printf("The Robot wait for the closet mutex of roommate %d\n", robot_thread_params->roommates[i].index);
 		robot_thread_params->roommates[i].mutex_closet.waiting_code = WaitForSingleObject(robot_thread_params->roommates[i].mutex_closet.handle, INFINITE);
 		if (robot_thread_params->roommates[i].mutex_closet.waiting_code != WAIT_OBJECT_0) {
 			WaitingStatus(robot_thread_params->roommates[i].mutex_closet.waiting_code, robot_thread_params->fp_debug, robot_thread_params->log_file);
 			return (ERROR_INDICATION);
 		}
-		//if (robot_thread_params->roommates[i].number_of_cloth_in_closet == 0) {
-		//	temp = 1;
-		//}
+		printf("The Robot took the closet mutex of roommate %d\n", robot_thread_params->roommates[i].index);
 		for (int j = 0; j < robot_thread_params->roommates[i].number_of_cloth_in_laundry; j++) {
+			printf("The Robot wait for the closet empty semaphore of roommate %d\n", robot_thread_params->roommates[i].index);
 			robot_thread_params->roommates[i].semahore_closet_empty.waiting_code = WaitForSingleObject(robot_thread_params->roommates[i].semahore_closet_empty.handle, INFINITE);
 			if (robot_thread_params->roommates[i].semahore_closet_empty.waiting_code != WAIT_OBJECT_0) {
 				WaitingStatus(robot_thread_params->roommates[i].semahore_closet_empty.waiting_code, robot_thread_params->fp_debug, robot_thread_params->log_file);
 				return (ERROR_INDICATION);
 			}
+			printf("The Robot took the closet empty semaphore of roommate %d\n", robot_thread_params->roommates[i].index);
+			printf("The Robot wants to release the closet full semaphore of roommate %d\n", robot_thread_params->roommates[i].index);
 			if (!(ReleaseSemaphore(robot_thread_params->roommates[i].semahore_closet_full.handle, 1, &previous_count))) {
 				printf("the robot fail to realeased the %dth cloth of roommate %d\n", j + 1, i);
 				PrintLog(robot_thread_params->fp_debug, "Error - release semaphore_laundry_bin_full\n", robot_thread_params->log_file, NULL);
 				return (ERROR_INDICATION);
 			}
+			printf("The Robot released the closet full semaphore of roommate %d\n", robot_thread_params->roommates[i].index);
 			printf("the robot realeased the %dth cloth of roommate %d\n", j + 1, i);
 		}
 
 		robot_thread_params->roommates[i].number_of_cloth_in_closet += robot_thread_params->roommates[i].number_of_cloth_in_laundry;
 		robot_thread_params->roommates[i].number_of_cloth_in_laundry = 0;
 
-
+		printf("The Robot wants to release the closet mutex of roommate %d\n", robot_thread_params->roommates[i].index);
 		if (!(ReleaseMutex(robot_thread_params->roommates[i].mutex_closet.handle))) {
 			PrintLog(robot_thread_params->fp_debug, "Error - release mutex closet\n", robot_thread_params->log_file, NULL);
 			return (ERROR_INDICATION);
 		}
 		printf("Robot released mutex closet of %d roommate\n", robot_thread_params->roommates[i].index);
-		//if (temp == 1) {
-		//	if (!(ReleaseMutex(robot_thread_params->roommates[i].mutex_zero_clothes.handle))) {
-		//		PrintLog(robot_thread_params->fp_debug, "Error - release mutex closet\n", robot_thread_params->log_file, NULL);
-		//		return (ERROR_INDICATION);
-		//	}
-		//}
-
 	}
+	printf("The Robot finished the ReturnClothesToRoomate function\n");
 	return SUCCESS_INDICATION;
 }
 
@@ -116,15 +117,15 @@ DWORD WINAPI LaundryMachineThread(LPVOID lpParam) {
 	printf("Hi I'm the Robot\n");
 	
 
-	while (robot_thread_params->time_thread->time_flag) {
+	do {
 		if (machine_is_on) {
-
+			printf("The Robot wait for the laundry bin mutex\n");
 			robot_thread_params->mutex_laundry_bin.waiting_code = WaitForSingleObject(robot_thread_params->mutex_laundry_bin.handle, INFINITE);
 			if (robot_thread_params->mutex_laundry_bin.waiting_code != WAIT_OBJECT_0) {
 				WaitingStatus(robot_thread_params->mutex_laundry_bin.waiting_code, robot_thread_params->fp_debug, robot_thread_params->log_file);
 				return (ERROR_INDICATION);
 			}
-
+			printf("The Robot took the laundry bin mutex\n");
 			PrintLog(robot_thread_params->fp_report, "Robot Active\n", robot_thread_params->report_file,NULL);
 			if (WashClothes(robot_thread_params) != SUCCESS_INDICATION) {
 				return MACHINE_THREAD__CODE_ERROR;
@@ -133,16 +134,19 @@ DWORD WINAPI LaundryMachineThread(LPVOID lpParam) {
 			if (ReturnClothesToRoommates(robot_thread_params) != SUCCESS_INDICATION) {
 				return MACHINE_THREAD__CODE_ERROR;
 			}
-			printf("Robot Finished the laundry operation\n");
+			printf("The Robot Finished the laundry operation\n");
 			machine_is_on = false;
+			printf("The Robot wants to releasethe laundry bin mutex\n");
 			if (!(ReleaseMutex(robot_thread_params->mutex_laundry_bin.handle))) {
 				PrintLog(robot_thread_params->fp_debug, "Error - release mutex laundry bin\n", robot_thread_params->log_file, NULL);
 				return (ERROR_INDICATION);
 			}
-			printf("Robot released the laundry bin mutex\n");
+			printf("The Robot released the laundry bin mutex\n");
 		}
-	}
-
+	} while (robot_thread_params->time_thread->time_flag);
+	printf("The Robot is going to sleep\n");
+	Sleep(4 * DELTA_TIME);
+	printf("The Robot Finished his WINAPI function!!!\n");
 	return MACHINE_THREAD__CODE_SUCCESS;
 
 }
