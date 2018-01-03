@@ -42,6 +42,8 @@ HANDLE CreateThreadSimple(LPTHREAD_START_ROUTINE roommate_start_routine, roommat
 int TakeCleanClothesFromCloset(roommate_info *roommate_thread_params) {
 	
 	LONG previous_count = NULL;
+	DWORD wait_time;
+	wait_time = roommate_thread_params->time_thread->program_time - roommate_thread_params->time_thread->time + DELTA_TIME * 3;
 	//LONG previous_count0 = 6;
 	//LONG previous_count1 = 1;
 	//LONG previous_count2 = 7;
@@ -50,36 +52,27 @@ int TakeCleanClothesFromCloset(roommate_info *roommate_thread_params) {
 	printf("Roommate %d has clothes in closet: %d\n", roommate_thread_params->index, roommate_thread_params->number_of_cloth_in_closet);
 	PrintLog(roommate_thread_params->fp_report, "Roommate %s active\n", roommate_thread_params->report_file, _itoa(roommate_thread_params->index, buffer, INT_BASE));
 	printf("Roommate %d wait for semaphore : closet full \n", roommate_thread_params->index);
-	roommate_thread_params->semahore_closet_full.waiting_code = WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, INFINITE);
+	roommate_thread_params->semahore_closet_full.waiting_code = WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, wait_time);
 	if (roommate_thread_params->semahore_closet_full.waiting_code != WAIT_OBJECT_0) {
 		WaitingStatus(roommate_thread_params->semahore_closet_full.waiting_code, roommate_thread_params->fp_debug, roommate_thread_params->log_file);
+		if (roommate_thread_params->semahore_closet_full.waiting_code == WAIT_TIMEOUT) {
+			// the program tome ended so we need to release the thread.
+			return (SUCCESS_INDICATION);
+		}
 		return (ERROR_INDICATION);
 	}
 	printf("Roommate %d took the semaphore : closet full \n", roommate_thread_params->index);
 	printf("Roommate %d wait for mutex : closet\n", roommate_thread_params->index);
-	roommate_thread_params->mutex_closet.waiting_code = WaitForSingleObject(roommate_thread_params->mutex_closet.handle, INFINITE);
+	roommate_thread_params->mutex_closet.waiting_code = WaitForSingleObject(roommate_thread_params->mutex_closet.handle, wait_time);
 	if (roommate_thread_params->mutex_closet.waiting_code != WAIT_OBJECT_0) {
 		WaitingStatus(roommate_thread_params->mutex_closet.waiting_code, roommate_thread_params->fp_debug, roommate_thread_params->log_file);
+		if (roommate_thread_params->semahore_closet_full.waiting_code == WAIT_TIMEOUT) {
+			// the program tome ended so we need to release the thread.
+			return (SUCCESS_INDICATION);
+		}
 		return (ERROR_INDICATION);
 	}
 	printf("Roommate %d took the mutex : closet\nThat means:\n", roommate_thread_params->index);
-	//printf("roommate %d wants a new cloth\n", roommate_thread_params->index);
-	//if (roommate_thread_params->index == 0) {
-	//	ReleaseSemaphore(roommate_thread_params->semahore_closet_full.handle, 1, &previous_count0);
-	//	//printf("roommate number %d - closet full semaphore value : %ld\n", roommate_thread_params->index, previous_count0);
-	//	WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, INFINITE);
-	//}
-	//if (roommate_thread_params->index == 1) {
-	//	ReleaseSemaphore(roommate_thread_params->semahore_closet_full.handle, 1, &previous_count1);
-	//	//printf("roommate number %d - closet full semaphore value : %ld\n", roommate_thread_params->index, previous_count1);
-	//	WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, INFINITE);
-	//}
-	//if (roommate_thread_params->index == 2) {
-	//	ReleaseSemaphore(roommate_thread_params->semahore_closet_full.handle, 1, &previous_count2);
-	//	//printf("roommate number %d - closet full semaphore value : %ld\n", roommate_thread_params->index, previous_count2);
-	//	WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, INFINITE);
-	//}
-
 	printf("Roommate %d took a new cloth\n", roommate_thread_params->index);
 	printf("Roommate %d want to release the semaphore : closet empty \n", roommate_thread_params->index);
 	if (!(ReleaseSemaphore(roommate_thread_params->semahore_closet_empty.handle, 1, &previous_count))) {
@@ -101,20 +94,34 @@ int TakeCleanClothesFromCloset(roommate_info *roommate_thread_params) {
 }
 
 int SendDirtyClothesToLaundry(roommate_info *roommate_thread_params) {
+	DWORD wait_time;
+	wait_time = roommate_thread_params->time_thread->program_time - roommate_thread_params->time_thread->time + DELTA_TIME * 3;
+
 	printf("Roommate %d started SendDirtyClothesToLaundry Function\n", roommate_thread_params->index);
 	printf("Roommate %d wait for laundry_bin mutex\n", roommate_thread_params->index);
-	roommate_thread_params->mutex_laundry_bin.waiting_code = WaitForSingleObject(roommate_thread_params->mutex_laundry_bin.handle, INFINITE);
+	roommate_thread_params->mutex_laundry_bin.waiting_code = WaitForSingleObject(roommate_thread_params->mutex_laundry_bin.handle, wait_time);
 	if (roommate_thread_params->mutex_laundry_bin.waiting_code != WAIT_OBJECT_0) {
 		WaitingStatus(roommate_thread_params->mutex_laundry_bin.waiting_code, roommate_thread_params->fp_debug, roommate_thread_params->log_file);
+		///
+		if (roommate_thread_params->semahore_closet_full.waiting_code == WAIT_TIMEOUT) {
+			// the program tome ended so we need to release the thread.
+			return (SUCCESS_INDICATION);
+		}
 		return (ERROR_INDICATION);
 	}
 	printf("roommate %d took the laundry_bin mutex\n", roommate_thread_params->index);
 	// a signal for the machine and block all the others from taking the laundry bin mutex 
 	if (machine_is_on == false) {
 		printf("Roommate %d wait for laundry bin full semaphore\n", roommate_thread_params->index);
-		roommate_thread_params->semaphore_laundry_bin_full.waiting_code = WaitForSingleObject(roommate_thread_params->semaphore_laundry_bin_full.handle, INFINITE);
+		roommate_thread_params->semaphore_laundry_bin_full.waiting_code = WaitForSingleObject(roommate_thread_params->semaphore_laundry_bin_full.handle, wait_time);
 		if (roommate_thread_params->semaphore_laundry_bin_full.waiting_code != WAIT_OBJECT_0) {
 			WaitingStatus(roommate_thread_params->semaphore_laundry_bin_full.waiting_code, roommate_thread_params->fp_debug, roommate_thread_params->log_file);
+			///
+			if (roommate_thread_params->semahore_closet_full.waiting_code == WAIT_TIMEOUT) {
+				// the program tome ended so we need to release the thread.
+				return (SUCCESS_INDICATION);
+			}
+
 			return (ERROR_INDICATION);
 		}
 		printf("Roommate %d took the laundry bin full semaphore\n", roommate_thread_params->index);
@@ -161,7 +168,7 @@ DWORD WINAPI RoommateThread(LPVOID lpParam) {
 	}
 	printf("Hi, I'm roommate %d\n", roommate_thread_params->index);
 
-	do {
+	while (roommate_thread_params->time_thread->time_flag) {
 		printf("roommate %d going to sleep\n", roommate_thread_params->index);
 		Sleep(roommate_thread_params->time_for_clothes_change);
 		printf("roommate %d is awake\n", roommate_thread_params->index);
@@ -175,16 +182,8 @@ DWORD WINAPI RoommateThread(LPVOID lpParam) {
 		if (SendDirtyClothesToLaundry(roommate_thread_params)) {
 			return ROOMMATE_THREAD__CODE_ERROR;
 		}
-	} while (roommate_thread_params->time_thread->time_flag);
+	} 
 	
-	//int is_mutsem_close = CloseMutexesAndSemaphores(roommate_thread_params);
-	//ReleaseSemaphore(roommate_thread_params->semahore_closet_empty.handle, 10,&prev);
-	//ReleaseSemaphore(roommate_thread_params->semahore_closet_full.handle, 10, &prev);
-	//ReleaseSemaphore(roommate_thread_params->semaphore_laundry_bin_empty.handle, 10, &prev);
-	//ReleaseSemaphore(roommate_thread_params->semaphore_laundry_bin_full.handle, 10, &prev);
-	//ReleaseMutex(roommate_thread_params->mutex_laundry_bin.handle);
-	//ReleaseMutex(roommate_thread_params->mutex_closet.handle);
-
 	printf("Roommate %d Finished The WINAPI function\nNow he need to return a value and finish the thread\n", roommate_thread_params->index);
 	return(ROOMMATE_THREAD__CODE_SUCCESS);
 	//ExitThread(1);

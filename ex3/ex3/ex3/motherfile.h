@@ -10,7 +10,7 @@ Description :
 #include <stdlib.h>
 #include <windows.h>
 #include <stdbool.h>
-
+#include <strsafe.h>
 
 #define ERROR_INDICATION -1
 #define ERROR_NUM_ROOMMATES -1

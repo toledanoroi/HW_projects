@@ -1,11 +1,11 @@
 ﻿  main.c
 c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\motherfile.h(20): warning C4005: 'MAXCHAR': macro redefinition
   c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(33): warning C4018: '<': signed/unsigned mismatch
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(61): warning C4018: '<': signed/unsigned mismatch
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(126): warning C4047: '>': 'DWORD' differs in levels of indirection from 'int *'
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(127): warning C4047: '=': 'int *' differs in levels of indirection from 'DWORD'
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(446): warning C4018: '<': signed/unsigned mismatch
-c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(483): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(118): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(146): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(190): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(218): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(283): warning C4047: '>': 'DWORD' differs in levels of indirection from 'int *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\ex3\ex3\ex3\main.c(284): warning C4047: '=': 'int *' differs in levels of indirection from 'DWORD'
   ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\ex3\ex3\x64\Debug\ex3.exe
   ex3.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\ex3\ex3\x64\Debug\ex3.pdb (Partial PDB)
