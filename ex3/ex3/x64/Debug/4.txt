@@ -1,0 +1,69 @@
+the file was opened
+the file was opened
+This is thread : 8168 	 Time Thread
+This is thread : 6356 	 Machine Thread
+This is thread : 16252 	 Roommate 0 Thread
+This is thread : 9472 	 Roommate 1 Thread
+This is thread : 11992 	 Roommate 2 Thread
+The Robot wait for the laundry bin mutex
+The Robot took the laundry bin mutex
+The Robot started the WashClothes function
+The Robot want to release the semaphore laundry bin full
+realease 0 succeded
+The Robot want to release the semaphore laundry bin full
+realease 1 succeded
+The Robot want to release the semaphore laundry bin full
+realease 2 succeded
+The Robot want to release the semaphore laundry bin full
+realease 3 succeded
+The Robot want to release the semaphore laundry bin full
+realease 4 succeded
+The Robot want to release the semaphore laundry bin full
+realease 5 succeded
+The Robot want to release the semaphore laundry bin full
+realease 6 succeded
+The Robot want to release the semaphore laundry bin full
+realease 7 succeded
+The Robot finished the WashClothes function
+The Robot started the ReturnClothesToRoommate function
+The Robot started returning clothes for roommate 0
+The Robot wait for the closet mutex of roommate 0
+The Robot took the closet mutex of roommate 0
+The Robot wants to release the closet mutex of roommate 0
+Robot released mutex closet of 0 roommate
+Robot return clothes to roommate 0
+The Robot started returning clothes for roommate 1
+The Robot wait for the closet mutex of roommate 1
+The Robot took the closet mutex of roommate 1
+The Robot wants to release the closet mutex of roommate 1
+Robot released mutex closet of 1 roommate
+Robot return clothes to roommate 1
+The Robot started returning clothes for roommate 2
+The Robot wait for the closet mutex of roommate 2
+The Robot took the closet mutex of roommate 2
+The Robot wants to release the closet mutex of roommate 2
+Robot released mutex closet of 2 roommate
+Robot return clothes to roommate 2
+The Robot finished the ReturnClothesToRoomate function
+The Robot Finished the laundry operation
+The Robot wants to release the laundry bin mutex
+The Robot released the laundry bin mutex
+The program time passed: 19001;
+The Robot Finished his WINAPI function!!!
+When The max time is 19000 
+Roommate 0 Finished The WINAPI function
+Now he need to return a value and finish the thread
+Timing thread finished his job
+Roommate 2 Finished The WINAPI function
+Now he need to return a value and finish the thread
+Timeout has elapsed, the object is not signaled.
+Because the proccess time was finished
+Roommate 1 Finished The WINAPI function
+Now he need to return a value and finish the thread
+Main thread is going to sleep
+The thread is awake and start closing the program
+The exit code of thread number 0is : 1
+The exit code of thread number 1is : 1
+The exit code of thread number 2is : 1
+The exit code of thread number 3is : 1
+The exit code of thread number 4is : 1

@@ -48,12 +48,8 @@ HANDLE mutex_debug_file;
 
 
 
-int PrintLog(FILE *fp, char *str_out, char* filename, char* substring);
+int PrintLog(FILE *fp, char *str_out, char* filename, char* substring, mutex file_mutex);
 int GetNumLines(FILE *fp, int *Line, FILE *fp_debug, char *logfile,char *file_path);
-//int GetProgramParameters(char *f_path_param, DWORD *td, DWORD *max_clothes_in_bin, roommate_info *roommates_array, FILE *fp_debug, char* logfile, int *num_of_roommates);
-//int AllocateMemForThreadsAndInit(HANDLE *ptr_roommate_thread_handle, DWORD *ptr_roommate_thread_id,
-//	DWORD *ptr_roommate_exitcode, DWORD *ptr_roommate_wait_code, roommate_info *roommates_array, int *num_of_roommate,
-//	FILE *fp_debug, char *logfile, machine_info *machine, DWORD max_clothes_in_bin);
 void WaitingStatus(DWORD waiting_code, FILE *fp_debug, char *logfile);
 char *replace_str(char *str, char *orig, char *rep);
-
+int PrintLogBeforeInit(FILE *fp, char *str_out, char* filename, char* substring);

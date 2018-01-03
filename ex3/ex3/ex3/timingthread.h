@@ -27,6 +27,9 @@ typedef struct {
 	char *log_file;
 	mutex mutex_time;
 
+	mutex mutex_debug_file;
+	mutex mutex_report_file;
+
 } timing_info;
 
 typedef enum {

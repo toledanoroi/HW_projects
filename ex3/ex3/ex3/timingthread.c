@@ -10,14 +10,21 @@ Description:		This module role is handle the timing thread that count the progra
 #include "machine.h"
 
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
-
+/*HANDLE CreateTimingThreadSimple
+Parameters:		p_start_routine			- A pointer tha points to a function that notifies the host that a thread has started to execute.
+				p_thread_parameters		- A pointer to a struct that contains all the parameters of the thread, including potential errors.
+				p_thread_id				- A pointer to the thread's ID.
+				fp_debud				- A pointer to the  debug log file.
+				file_name				- A pointer to the name of the log file string.
+Returns:		A HANDLE variable		- The handle of the thread that was created.
+Description:	A function that calls CreateThread function, that creates a thread to execute TimeCounterThread WINAPI function.*/
 HANDLE CreateTimingThreadSimple(LPTHREAD_START_ROUTINE timing_start_routine, timing_info *timing_parameters, DWORD *timing_thread_id, FILE *fp_debug, char *file_name) {
 	/* Parameters */
 	HANDLE thread_handle;
 
 	/* Checks if the function received a null pointer */
 	if (NULL == timing_start_routine) {
-		PrintLog(fp_debug, "Error when creating a thread\nReceived null pointer\n", file_name, NULL);
+		PrintLog(fp_debug, "Error when creating a thread\nReceived null pointer\n", file_name, NULL, timing_parameters->mutex_debug_file);
 		exit(TIMING_THREAD__CODE_ERROR);
 	}
 
@@ -32,14 +39,17 @@ HANDLE CreateTimingThreadSimple(LPTHREAD_START_ROUTINE timing_start_routine, tim
 									/* Checks if the thread was created properly */
 	if (thread_handle == NULL) {
 		timing_parameters->error_thread_creation = true;
-		PrintLog(fp_debug, "Error when creating a thread\nThread handler is NULL\n", file_name, NULL);
+		PrintLog(fp_debug, "Error when creating a thread\nThread handler is NULL\n", file_name, NULL, timing_parameters->mutex_debug_file);
 		exit(TIMING_THREAD__CODE_ERROR);
 	}
 	return thread_handle;
 }
 
 
-
+/*DWORD WINAPI TimeCounterThread
+Parameters:		lpParam				- LPVOID type, pointer to the thread's parameters, can be any pointer we want.
+Returns:		A DWORD variable	- TIMING_THREAD__CODE_SUCCESS = 0 , TIMING_THREAD__CODE_ERROR = -1, TIMING_THREAD__CODE_FAILED=1.
+Description:	The main function of the robot thread.*/
 DWORD WINAPI TimeCounterThread(LPVOID lpParam) {
 	/* Parameters */
 	timing_info *time_thread_params = NULL;
@@ -52,14 +62,13 @@ DWORD WINAPI TimeCounterThread(LPVOID lpParam) {
 	{
 		return TIMING_THREAD__CODE_FAILED;
 	}
-	printf("Hi, I'm the time counter\n");
 	int start_time = GetTickCount();
-	PrintLog(time_thread_params->fp_report, "Simulation Started\n", time_thread_params->report_file, NULL);
+	PrintLog(time_thread_params->fp_report, "Simulation Started\n", time_thread_params->report_file, NULL, time_thread_params->mutex_report_file);
 	while(time_thread_params->time_flag) {
 		time_thread_params->mutex_time.waiting_code = WaitForSingleObject(time_thread_params->mutex_time.handle, INFINITE);
 		if (time_thread_params->mutex_time.waiting_code != WAIT_OBJECT_0) {
 			WaitingStatus(time_thread_params->mutex_time.waiting_code, time_thread_params->fp_debug, time_thread_params->log_file);
-			return (ERROR_INDICATION);
+			return (TIMING_THREAD__CODE_ERROR);
 		}
 		time_thread_params->time = (GetTickCount() - start_time);
 		//printf("the time is : %ld\n", time_thread_params->time);
@@ -67,16 +76,16 @@ DWORD WINAPI TimeCounterThread(LPVOID lpParam) {
 
 		if (time_thread_params->time >= time_thread_params->program_time) {
 			time_thread_params->time_flag = false;
-			printf("the program time passed: %ld;\nWhen The max time is %ld\n", time_thread_params->time, time_thread_params->program_time);
+			PrintLog(time_thread_params->fp_debug, "The program time passed: %s;\n", time_thread_params->log_file, _itoa(time_thread_params->time, buffer, INT_BASE),time_thread_params->mutex_debug_file);
+			PrintLog(time_thread_params->fp_debug, "When The max time is %s \n", time_thread_params->log_file, _itoa(time_thread_params->program_time, buffer, INT_BASE), time_thread_params->mutex_debug_file);
 		}
 		if (!(ReleaseMutex(time_thread_params->mutex_time.handle))) {
-			PrintLog(time_thread_params->fp_debug, "Error - release mutex closet\n", time_thread_params->log_file, NULL);
-			return (ERROR_INDICATION);
+			PrintLog(time_thread_params->fp_debug, "Error - release mutex closet\n", time_thread_params->log_file, NULL, time_thread_params->mutex_debug_file);
+			return (TIMING_THREAD__CODE_ERROR);
 		}
 		Sleep(DELTA_TIME);
 	}
-	Sleep(4 * DELTA_TIME);
-	printf("timing thread finished his job\n");
+	PrintLog(time_thread_params->fp_debug, "Timing thread finished his job\n", time_thread_params->log_file, NULL, time_thread_params->mutex_debug_file);
 	return TIMING_THREAD__CODE_SUCCESS;
 }
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
