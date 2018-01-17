@@ -1,0 +1,55 @@
+the file was opened
+the file was opened
+This is thread : 4468 	 Time Thread
+This is thread : 6656 	 Machine Thread
+This is thread : 5536 	 Roommate 0 Thread
+This is thread : 8800 	 Roommate 1 Thread
+This is thread : 7296 	 Roommate 2 Thread
+This is thread : 8120 	 Roommate 3 Thread
+The Robot wait for the laundry bin mutex
+The Robot took the laundry bin mutex
+The Robot started the WashClothes function
+The Robot want to release the semaphore laundry bin full
+realease 0 succeded
+The Robot want to release the semaphore laundry bin full
+realease 1 succeded
+The Robot want to release the semaphore laundry bin full
+realease 2 succeded
+The Robot want to release the semaphore laundry bin full
+realease 3 succeded
+The Robot want to release the semaphore laundry bin full
+realease 4 succeded
+The Robot want to release the semaphore laundry bin full
+realease 5 succeded
+The Robot want to release the semaphore laundry bin full
+realease 6 succeded
+The Robot want to release the semaphore laundry bin full
+realease 7 succeded
+The Robot finished the WashClothes function
+The Robot started the ReturnClothesToRoommate function
+The Robot started returning clothes for roommate 0
+The Robot wait for the closet mutex of roommate 0
+The Robot took the closet mutex of roommate 0
+The Robot wants to release the closet mutex of roommate 0
+Robot released mutex closet of 0 roommate
+Robot return clothes to roommate 0
+The handle to the object was not released by the thread before the thread was terminated.
+The handle to the object was not released by the thread before the thread was terminated.
+The handle to the object was not released by the thread before the thread was terminated.
+The program time passed: 10998;
+When The max time is 10000 
+Timing thread finished his job
+Timeout has elapsed, the object is not signaled.
+Because the proccess time was finished
+The handle to the object was not released by the thread before the thread was terminated.
+Because the proccess time was finished
+Roommate 1 Finished The WINAPI function
+Now he need to return a value and finish the thread
+Main thread is going to sleep
+The thread is awake and start closing the program
+The exit code of thread number 0is : 1
+The exit code of thread number 1is : 1
+The exit code of thread number 2is : 1
+The exit code of thread number 3is : 1
+The exit code of thread number 4is : 1
+The exit code of thread number 5is : 1

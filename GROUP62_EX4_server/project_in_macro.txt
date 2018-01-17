@@ -1,0 +1,25 @@
+ex4 x/o : 
+
+projects : 
+	client:
+	handle rx/tx to the server and user I/O. 
+		threads : 
+		1. Rx 
+		2. Tx 	
+		3. thread that hold an ipconfig process. 
+		4. I/O thread. 
+	
+	server: 
+	handle rx/tx with clients.(accept / decline connection), manage the game.
+		threads: 
+		1. Rx client 1. 
+		2. Rx client 2. 
+		3. Tx client 1.	
+		4. Tx client 2. 
+		5. game manager and proccessor.
+
+ 
+	 
+shared files : 
+	1.parsing messages.
+	2.error manager. 

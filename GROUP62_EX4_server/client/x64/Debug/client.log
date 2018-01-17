@@ -1,0 +1,10 @@
+﻿  main.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(31): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(97): warning C4133: 'function': incompatible types - from 'SOCKET *' to 'client_info *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(97): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'LPDWORD *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(97): warning C4024: 'CreateThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(134): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(140): warning C4715: 'InitAndAllocClient': not all control paths return a value
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\x64\Debug\client.exe
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\x64\Debug\client.pdb (Partial PDB)

@@ -9,40 +9,6 @@ Description : main of the process; read and write files, manage threads opening.
 #include "machine.h"
 
 
-/*int PrintLog
-Parameters:		fp	- A pointer to the the file we wish to write in it.
-				str_out - The string we wish to write in the file.
-				filename - The string that represents the files name.
-				substring - The string that %s is replaced with.
-Returns:		An int variable			- Success = 0 and Error = -1
-Description:	A function that writes to the specific file we send it.*/
-int PrintLog(FILE *fp, char *str_out, char* filename, char* substring, mutex file_mutex) {
-	
-	file_mutex.waiting_code = WaitForSingleObject(file_mutex.handle, INFINITE);
-	if (file_mutex.waiting_code != WAIT_OBJECT_0) {
-		return (ERROR_INDICATION);
-	}
-	errno_t err_debug = fopen_s(&fp, filename, "a");
-	char* str_final;
-	if (err_debug != SUCCESS_INDICATION) {
-		return ERROR_INDICATION;
-	}
-	else {
-		if (substring != NULL) {
-			str_final = replace_str(str_out, "%s", substring);
-			fprintf_s(fp, "%s", str_final);
-		}
-		else { 
-			fprintf_s(fp, "%s", str_out);
-		}	
-	}
-	fclose(fp);
-	if (!(ReleaseMutex(file_mutex.handle))) {
-		return (ERROR_INDICATION);
-	}
-
-	return SUCCESS_INDICATION;
-}
 
 int PrintLogBeforeInit(FILE *fp, char *str_out, char* filename, char* substring) {
 
@@ -154,3 +120,37 @@ char *replace_str(char *str, char *orig, char *rep)
 	return buffer;
 }
 
+/*int PrintLog
+Parameters:		fp	- A pointer to the the file we wish to write in it.
+str_out - The string we wish to write in the file.
+filename - The string that represents the files name.
+substring - The string that %s is replaced with.
+Returns:		An int variable			- Success = 0 and Error = -1
+Description:	A function that writes to the specific file we send it.*/
+int PrintLog(FILE *fp, char *str_out, char* filename, char* substring, mutex file_mutex) {
+
+	// file_mutex.waiting_code = WaitForSingleObject(file_mutex.handle, INFINITE);
+	//if (file_mutex.waiting_code != WAIT_OBJECT_0) {
+	//	return (ERROR_INDICATION);
+	//}
+	errno_t err_debug = fopen_s(&fp, filename, "a");
+	char* str_final;
+	if (err_debug != SUCCESS_INDICATION) {
+		return ERROR_INDICATION;
+	}
+	else {
+		if (substring != NULL) {
+			str_final = replace_str(str_out, "%s", substring);
+			fprintf_s(fp, "%s", str_final);
+		}
+		else {
+			fprintf_s(fp, "%s", str_out);
+		}
+	}
+	fclose(fp);
+	//if (!(ReleaseMutex(file_mutex.handle))) {
+	//	return (ERROR_INDICATION);
+	//}
+
+	return SUCCESS_INDICATION;
+}

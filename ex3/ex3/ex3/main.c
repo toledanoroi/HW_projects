@@ -123,18 +123,39 @@ int main(int argc, char *argv[]) {
 		if (jj == 0) {
 			// Create a thread for the time counter
 			ptr_roommate_thread_handle[jj] = CreateTimingThreadSimple(TimeCounterThread, time_thread, &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+			if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+				return (ERROR_INDICATION);
+			}
 			PrintLog(fp_debug, "This is thread : %s \t Time Thread\n", argv[3],_itoa((ptr_roommate_thread_id[jj]),buffer,INT_BASE), time_thread->mutex_debug_file);
+			if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+				return (ERROR_INDICATION);
+			}
 		}
 		else if (jj == 1) {
 			// Create a thread for the machine
 			ptr_roommate_thread_handle[jj] = CreateThreadSimpleMachine(LaundryMachineThread, machine, &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+			if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+				return (ERROR_INDICATION);
+			}
 			PrintLog(fp_debug, "This is thread : %s \t Machine Thread\n", argv[3], _itoa((ptr_roommate_thread_id[jj]), buffer, INT_BASE), time_thread->mutex_debug_file);
+			if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+				return (ERROR_INDICATION);
+			}
 		}
 		else {
 			// Create a thread for each roommate
 			ptr_roommate_thread_handle[jj] = CreateThreadSimple(RoommateThread, &(roommates_array[jj - 2]), &(ptr_roommate_thread_id[jj]), fp_debug, argv[3]);
+			time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+			if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+				return (ERROR_INDICATION);
+			}
 			PrintLog(fp_debug, "This is thread : %s \t Roommate", argv[3], _itoa((ptr_roommate_thread_id[jj]), buffer, INT_BASE), time_thread->mutex_debug_file);
 			PrintLog(fp_debug, " %s Thread\n", argv[3], _itoa((roommates_array[jj - 2].index), buffer, INT_BASE), time_thread->mutex_debug_file);
+			if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+				return (ERROR_INDICATION);
+			}
 		}
 		
 	}
@@ -142,20 +163,39 @@ int main(int argc, char *argv[]) {
 	// wait for all the thread to be done.
 	DWORD waitcode_main = WaitForMultipleObjects(num_of_threads, ptr_roommate_thread_handle, TRUE, INFINITE);
 	//DWORD waitcode_main = WaitForSingleObject(ptr_roommate_thread_handle[1], INFINITE);
-	
+	time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+	if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+		return (ERROR_INDICATION);
+	}
 	PrintLog(fp_debug, "Main thread is going to sleep\n", argv[3], NULL, time_thread->mutex_debug_file);
-
 	PrintLog(fp_debug, "The thread is awake and start closing the program\n", argv[3], NULL, time_thread->mutex_debug_file);
+	if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+		return (ERROR_INDICATION);
+	}
 	//get exit codes 
 	for (int kk = 0; kk < num_of_threads; kk++) {
 		ptr_roommate_exitcode[kk] = GetExitCodeThread(ptr_roommate_thread_handle[kk], (&(ptr_roommate_exitcode[kk])));
 		if (ptr_roommate_exitcode[kk] == 0) {
+			time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+			if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+				return (ERROR_INDICATION);
+			}
 			PrintLog(fp_debug, "Error with exitcodes of the thread\n",argv[3],NULL, time_thread->mutex_debug_file);
+			if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+				return (ERROR_INDICATION);
+			}
 			return ERROR_INDICATION;
 		}
 		else {
+			time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+			if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+				return (ERROR_INDICATION);
+			}
 			PrintLog(fp_debug, "The exit code of thread number %s", argv[3], _itoa(kk, buffer, INT_BASE), time_thread->mutex_debug_file);
 			PrintLog(fp_debug, "is : %s\n", argv[3], _itoa(ptr_roommate_exitcode[kk], buffer, INT_BASE), time_thread->mutex_debug_file);
+			if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+				return (ERROR_INDICATION);
+			}
 		}
 	}
 	
@@ -164,7 +204,14 @@ int main(int argc, char *argv[]) {
 		ptr_roommate_exitcode, ptr_roommate_wait_code, roommates_array,
 		machine, fp_debug, argv[3], time_thread, num_of_threads);
 	if (is_free != SUCCESS_INDICATION) {
+		time_thread->mutex_debug_file.waiting_code = WaitForSingleObject(time_thread->mutex_debug_file.handle, INFINITE);
+		if (time_thread->mutex_debug_file.waiting_code != WAIT_OBJECT_0) {
+			return (ERROR_INDICATION);
+		}
 		PrintLog(fp_debug, "Error when try to free memory\n", argv[3], NULL, time_thread->mutex_debug_file);
+		if (!(ReleaseMutex(time_thread->mutex_debug_file.handle))) {
+			return (ERROR_INDICATION);
+		}
 		return (ERROR_INDICATION);
 	}
 	return (SUCCESS_INDICATION);

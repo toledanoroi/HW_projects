@@ -1,0 +1,43 @@
+﻿  SocketExampleClient.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(52): warning C4047: 'function': 'char *' differs in levels of indirection from 'char *[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(52): warning C4024: 'PrintLog': different types for formal and actual parameter 4
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(53): warning C4013: 'ParsingClient' undefined; assuming extern returning int
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(64): warning C4047: '=': 'char' differs in levels of indirection from 'char *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(65): warning C4047: '=': 'int' differs in levels of indirection from 'char *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(81): warning C4477: 'printf' : format string '%c' requires an argument of type 'int', but variadic argument 2 has type 'char *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(155): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'char **'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(190): warning C4047: 'function': 'char *' differs in levels of indirection from 'clientmessage *[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(190): warning C4024: 'PrintLog': different types for formal and actual parameter 4
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(212): warning C4047: 'function': 'clientmessage *' differs in levels of indirection from 'clientmessage *[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(212): warning C4024: 'ClientMessageGenarator': different types for formal and actual parameter 1
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(260): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(273): warning C4047: 'function': 'clientmessage **' differs in levels of indirection from 'clientmessage *(*)[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(273): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 6
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(276): warning C4047: 'function': 'clientmessage **' differs in levels of indirection from 'clientmessage *(*)[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(276): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 6
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(280): warning C4047: 'function': 'clientmessage **' differs in levels of indirection from 'clientmessage *(*)[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(280): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 6
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(285): warning C4047: 'function': 'char *' differs in levels of indirection from 'char'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(285): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(285): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 4
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(285): warning C4047: 'function': 'clientmessage **' differs in levels of indirection from 'clientmessage *(*)[1]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(285): warning C4024: 'ClientMessageBuilder': different types for formal and actual parameter 6
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(235): warning C4101: 'RecvRes': unreferenced local variable
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(379): warning C4047: 'initializing': 'const char' differs in levels of indirection from 'char [2]'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(489): warning C4047: 'function': 'char *' differs in levels of indirection from 'int'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(489): warning C4024: 'PrintLog': different types for formal and actual parameter 5
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(495): warning C4047: 'function': 'char *' differs in levels of indirection from 'int'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(495): warning C4024: 'PrintLog': different types for formal and actual parameter 5
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(506): warning C4047: 'function': 'SOCKET' differs in levels of indirection from 'SOCKET *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(506): warning C4024: 'InitClient': different types for formal and actual parameter 7
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(509): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'DWORD'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(509): warning C4024: 'CreateClientThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(511): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'DWORD'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(511): warning C4024: 'CreateClientThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(513): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'DWORD'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(513): warning C4024: 'CreateClientThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(488): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 2 has type 'int'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(494): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 2 has type 'int'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(347): warning C4716: 'InitClient': must return a value
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\client\Debug\client.exe
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\client\Debug\client.pdb (Partial PDB)

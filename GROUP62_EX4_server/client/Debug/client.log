@@ -1,0 +1,21 @@
+﻿  main.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(115): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *'
+  ClientTx.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+  ClientRx.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+  MainStructs.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.c(12): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *'
+  Demodulator.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+  Generating Code...
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\client\main.c(121): warning C4715: 'InitAndAllocClient': not all control paths return a value
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\Debug\client.exe
+  client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\Debug\client.pdb (Partial PDB)

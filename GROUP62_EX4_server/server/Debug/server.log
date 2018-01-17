@@ -1,0 +1,24 @@
+﻿  ServerManager.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\share\mainstructs.h(32): warning C4005: 'MAXCHAR': macro redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winnt.h(1095): note: see previous definition of 'MAXCHAR'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(40): warning C4033: 'ServerMainFunc' must return a value
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(84): warning C4047: '=': 'int' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(86): warning C4047: '=': 'char' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(87): warning C4047: '=': 'SOCKET' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(90): warning C4047: '=': 'int' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(92): warning C4047: '=': 'char' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(93): warning C4047: '=': 'SOCKET' differs in levels of indirection from 'void *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(98): warning C4133: 'function': incompatible types - from 'connection_mparams *' to 'server_info *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(98): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'LPDWORD *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(98): warning C4024: 'CreateThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(98): warning C4020: 'CreateThreadSimple': too many actual parameters
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(230): warning C4133: 'function': incompatible types - from 'SOCKET *' to 'server_info *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(231): warning C4047: 'function': 'DWORD *' differs in levels of indirection from 'LPDWORD *'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(231): warning C4024: 'CreateThreadSimple': different types for formal and actual parameter 3
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(231): warning C4020: 'CreateThreadSimple': too many actual parameters
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(173): warning C4101: 'kk': unreferenced local variable
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(179): warning C4101: 'rx_tx_thread_id': unreferenced local variable
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(178): warning C4101: 'rx_tx_thread_handles': unreferenced local variable
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\group62_ex4_server\server\servermanager.c(119): warning C4715: 'ServerMainFunc': not all control paths return a value
+  server.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\Debug\server.exe
+  server.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\GROUP62_EX4_server\Debug\server.pdb (Partial PDB)

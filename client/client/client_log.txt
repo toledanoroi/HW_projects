@@ -1,0 +1,4 @@
+Connected to server on 127.0.0.1:%s2
+Connected to server on %s1:8888
+Recieved from server: Welcome to Tic Tac Toe Game server
+!Recieved from server: %s1Sent to server: NEW_USER_REQUEST:isp_studentSent to server: %s1

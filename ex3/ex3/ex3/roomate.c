@@ -62,7 +62,6 @@ int TakeCleanClothesFromCloset(roommate_info *roommate_thread_params) {
 
 	//roommate wants the closet mutex
 	PrintLog(roommate_thread_params->fp_report, "Roommate %s active\n", roommate_thread_params->report_file, _itoa(roommate_thread_params->index, buffer, INT_BASE),roommate_thread_params->mutex_report_file);
-	
 	//PrintLog(roommate_thread_params->fp_debug, "Roommate %s wait for semaphore : closet full \n", roommate_thread_params->log_file, _itoa(roommate_thread_params->index, buffer, INT_BASE), roommate_thread_params->mutex_debug_file);
 	roommate_thread_params->semahore_closet_full.waiting_code = WaitForSingleObject(roommate_thread_params->semahore_closet_full.handle, wait_time);
 	if (roommate_thread_params->semahore_closet_full.waiting_code != WAIT_OBJECT_0) {
