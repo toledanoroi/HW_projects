@@ -1,3 +1,5 @@
 ﻿  SocketExampleClient.c
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(412): warning C4047: 'function': 'const char *' differs in levels of indirection from 'char'
+c:\users\dell\documents\studies_ee_tau\semester_6\operating_systems\hw_projects\client\client\socketexampleclient.c(412): warning C4024: 'strtok': different types for formal and actual parameter 2
   client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\client\x64\Debug\client.exe
   client.vcxproj -> C:\Users\DELL\Documents\Studies_EE_Tau\semester_6\Operating_systems\HW_projects\client\x64\Debug\client.pdb (Partial PDB)

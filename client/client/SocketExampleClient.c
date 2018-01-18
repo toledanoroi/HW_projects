@@ -387,26 +387,32 @@ HANDLE CreateClientThreadSimple(LPTHREAD_START_ROUTINE client_start_routine, cli
 int ParsingClient(char *AcceptedStr, servermessage **message) {
 	int i = 0;
 	char *string;
-	char *param_i;
-	const char c = ';';
+	//char *param_i;
+	char c = ',';
 	string = strtok(AcceptedStr, ":");
 	if (string == NULL) {
-		(*message)->no_param = true;
-		string = AcceptedStr;
+		printf("Error - parsing Sever func - no legal input\n");
+		return ERROR_INDICATION;
 	}
 	for (i; i < 5; i++) {
 		if (STRINGS_ARE_EQUAL(string, client_messages[i]))
 			(*message)->opcode = i;
 	}
-	if ((*message)->no_param = true)
-		return SUCCESS_INDICATION;
-
-	i = 0;
-	param_i = strchr(AcceptedStr, c);
-	while ((param_i != NULL) && (i < 3)) {
-		(*message)->params[i] = strtok(AcceptedStr, ";");
+	//check if relevant
+	//if ((*message)->no_param = true)
+	//	return SUCCESS_INDICATION;
+	//i = 0;
+	//param_i = strchr(AcceptedStr, c);
+	//while ((param_i != NULL) && (i < 4)) {
+	//	(*message)->params[i] = strtok(AcceptedStr, ";");
+	//	i++;
+	//}
+	int j = 0;
+	while (string != NULL) {
+		string = strtok(NULL, c);
+		(*message)->params[j] = string;
+		j++;
 	}
-
 	return SUCCESS_INDICATION;
 }
 

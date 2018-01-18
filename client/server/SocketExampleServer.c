@@ -356,27 +356,38 @@ int InitAndAlloc(server_info **server_params, char *server_log, char *server_por
 //------------------------------------------------------------------------------
 int ParsingServer(char *AcceptedStr, clientmessage **message) {
 	int i = 0;
-	char *string;
-	char *param_i;
-	char c = ';';
-	string = strtok(AcceptedStr, ":");
+	char *string = (char*)malloc(sizeof(char)*MAXCHAR);
+	char *next_token;
+	//char *param_i;
+//	char c = ",";
+	string = strtok_s(AcceptedStr, ":", &next_token);
+	printf("%s\n", string);
+	//string = strtok(AcceptedStr, ":");
 	if (string == NULL) {
-		(*message)->no_param = true;
-		string = AcceptedStr;
+		printf("Error - parsing Sever func - no legal input\n");
+		return ERROR_INDICATION;
 	}
 	for (i; i < 5; i++) {
 		if (STRINGS_ARE_EQUAL(string, client_messages[i]))
 			(*message)->opcode = i;
 	}
+	printf("opcode:%d\n", (*message)->opcode);
 	//check if relevant
 	//if ((*message)->no_param = true)
 	//	return SUCCESS_INDICATION;
-
-	i = 0;
-	param_i = strchr(AcceptedStr, c);
-	while ((param_i != NULL) && (i < 4)) {
-		(*message)->params[i] = strtok(AcceptedStr, ";");
-		i++;
+	//i = 0;
+	//param_i = strchr(AcceptedStr, c);
+	//while ((param_i != NULL) && (i < 4)) {
+	//	(*message)->params[i] = strtok(AcceptedStr, ";");
+	//	i++;
+	//}
+	int j = 0;
+	while (string != NULL) {
+		string = strtok_s(NULL, ",", &next_token);
+		printf("%s\n", string);
+		//string = strtok(NULL, c);
+		(*message)->params[j] = string;
+		j++;
 	}
 	return SUCCESS_INDICATION;
 }
